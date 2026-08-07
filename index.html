@@ -1,0 +1,17 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Vehicle Tracker</title>
+</head><body>
+<script>
+  // Supabase's email links always redirect to ONE url (this page), never two
+  // different ones for success vs failure — it only distinguishes outcome via
+  // the URL fragment (#error=... on failure, #access_token=...&type=... on
+  // success). This page reads that fragment and forwards immediately to a
+  // real, separate success.html or failure.html page, preserving the
+  // fragment/query so those pages can read it too.
+  var target = location.hash.indexOf('error=') !== -1 || location.search.indexOf('error=') !== -1
+    ? 'failure.html'
+    : 'success.html';
+  location.replace(target + location.search + location.hash);
+</script>
+</body></html>
