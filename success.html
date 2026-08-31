@@ -1,58 +1,63 @@
 <!doctype html><html lang="en"><head>
 <meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
-<title>Vehicle Tracker</title>
+<title>KarvIQ</title>
 <style>
-  :root{--navy:#0E9AAB;--navy2:#0A6E7B;--amber:#F59E0B;--ink:#102232;--muted:#5b6b78;--border:#e6eaef;}
-  *{box-sizing:border-box;margin:0;font-family:-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  :root{--ink:#0F0F0E;--amber:#D97B12;--muted:#6C6C64;--border:#E7E4DB;--bg:#EDEBE3;}
+  *{box-sizing:border-box;margin:0;font-family:"Space Grotesk",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
   body{min-height:100vh;display:flex;align-items:center;justify-content:center;
-    background:linear-gradient(160deg,#16C0D4,#0A6E7B);padding:24px;}
+    background:var(--bg);padding:24px;}
   .card{background:#fff;border-radius:20px;max-width:420px;width:100%;padding:36px 30px;
-    box-shadow:0 24px 60px rgba(0,0,0,.28);text-align:center;}
-  .logo{width:84px;height:84px;margin:0 auto 18px;}
-  h1{font-size:22px;color:var(--ink);letter-spacing:-.3px;}
+    box-shadow:0 24px 60px rgba(15,15,14,.14);text-align:center;}
+  .logo{width:64px;height:64px;border-radius:18px;background:var(--ink);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;
+    letter-spacing:-.5px;margin:0 auto 18px;}
+  h1{font-size:22px;color:var(--ink);letter-spacing:-.3px;font-weight:600;}
   p{color:var(--muted);font-size:15px;line-height:1.5;margin-top:10px;}
-  .btn{display:block;width:100%;height:52px;line-height:52px;border-radius:14px;background:var(--navy);
+  .btn{display:block;width:100%;height:52px;line-height:52px;border-radius:14px;background:var(--ink);
     color:#fff;font-weight:700;font-size:16px;text-decoration:none;margin-top:22px;border:none;cursor:pointer;}
-  .btn.amber{background:var(--amber);color:#0A6E7B;}
+  .btn.amber{background:var(--amber);color:#fff;}
   input{width:100%;height:50px;border:1px solid var(--border);border-radius:12px;padding:0 14px;
     font-size:16px;margin-top:14px;color:var(--ink);}
   label{display:block;text-align:left;font-size:13px;font-weight:600;color:var(--muted);margin-top:14px;}
-  .ok{color:#16a34a;} .err{color:#dc2626;}
-  .tick{width:72px;height:72px;border-radius:50%;background:#eafaf0;color:#16a34a;font-size:38px;
+  .ok{color:#1B7A4A;} .err{color:#C0392B;}
+  .tick{width:72px;height:72px;border-radius:50%;background:#E4F0E8;color:#1B7A4A;font-size:38px;
     line-height:72px;margin:0 auto 16px;}
-  .foot{font-size:12px;color:#9aa7b1;margin-top:18px;}
+  .foot{font-size:12px;color:#A5A59D;margin-top:18px;}
 </style></head><body><div class="card">
-<svg class="logo" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
-  <defs><linearGradient id="g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#16C0D4"/><stop offset="1" stop-color="#0A6E7B"/></linearGradient></defs>
-  <rect width="1024" height="1024" rx="220" fill="url(#g)"/>
-  <g transform="translate(512,512)" fill="#F59E0B">
-    <rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(0)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(30)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(60)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(90)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(120)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(150)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(180)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(210)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(240)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(270)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(300)"/><rect x="-34" y="-360" width="68" height="96" rx="12" transform="rotate(330)"/>
-  </g>
-  <circle cx="512" cy="512" r="238" fill="url(#g)"/>
-  <g transform="translate(512,512)" fill="#fff">
-    <rect x="-186" y="-30" width="372" height="120" rx="32"/>
-    <rect x="-96" y="-98" width="192" height="84" rx="26"/>
-    <rect x="-74" y="-82" width="148" height="54" rx="12" fill="#F59E0B"/>
-    <circle cx="-114" cy="88" r="45"/><circle cx="-114" cy="88" r="18" fill="url(#g)"/>
-    <circle cx="114" cy="88" r="45"/><circle cx="114" cy="88" r="18" fill="url(#g)"/>
-  </g>
-</svg>
+<div class="logo" id="logo">K</div>
 <div id="slot"><h1>Loading&hellip;</h1></div>
-<div class="foot">Vehicle Maintenance &amp; Warranty Tracker</div>
+<div class="foot" id="foot">KarvIQ</div>
 </div>
 <script>
   const SUPABASE_URL = "https://nyklbvlregofpplcojbf.supabase.co";
   const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a2xidmxyZWdvZnBwbGNvamJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4Mjk2MjMsImV4cCI6MjEwMTQwNTYyM30.eeSPv6Wph-FEg8v0zPnuV40vXjYMfT5QwciaBOcQYR8";
-  const APP = "vehicletracker://";
-  // Bundle/package id matches app.json exactly on both platforms. Both URLs
-  // 404 until the app is actually published on each store — the Apple one
-  // uses a placeholder numeric id since there's no App Store listing yet;
-  // replace APPLE_APP_ID once one exists. Both start working automatically
+
+  // karviq-customer and karviq-business are separate apps sharing this one
+  // Supabase project, each with its own scheme/package id. Each app passes
+  // ?app=customer or ?app=business in its emailRedirectTo/resetTo URL so this
+  // page knows which one to hand off to; default to customer if missing
+  // (e.g. an old email sent before this param existed).
+  const earlyQs = new URLSearchParams(location.search);
+  const appKind = earlyQs.get('app') === 'business' ? 'business' : 'customer';
+  const APP = appKind === 'business' ? "karviqbusiness://" : "karviq://";
+  // Bundle/package id matches app.config.js exactly on both platforms. Both
+  // URLs 404 until each app is actually published on its store — the Apple
+  // ones use placeholder numeric ids since there's no App Store listing yet;
+  // replace APPLE_APP_ID_* once one exists. Both start working automatically
   // with no code change once published.
-  const PLAY_STORE = "https://play.google.com/store/apps/details?id=com.progranza.vehicletracker";
-  const APP_STORE = "https://apps.apple.com/app/idAPPLE_APP_ID";
+  const PLAY_STORE = appKind === 'business'
+    ? "https://play.google.com/store/apps/details?id=com.progranza.karviqbusiness"
+    : "https://play.google.com/store/apps/details?id=com.progranza.karviq";
+  const APP_STORE = appKind === 'business'
+    ? "https://apps.apple.com/app/idAPPLE_APP_ID_BUSINESS"
+    : "https://apps.apple.com/app/idAPPLE_APP_ID_CUSTOMER";
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const STORE_URL = isIOS ? APP_STORE : PLAY_STORE;
+
+  const APP_NAME = appKind === 'business' ? 'KarvIQ Business' : 'KarvIQ';
+  document.getElementById('foot').textContent = APP_NAME;
+  document.getElementById('logo').textContent = appKind === 'business' ? 'KB' : 'K';
+  document.title = APP_NAME;
 
   const hash = new URLSearchParams(location.hash.slice(1));
   const qs = new URLSearchParams(location.search);
@@ -93,14 +98,14 @@
       const r = await fetch(SUPABASE_URL+'/auth/v1/user', {method:'PUT',
         headers:{'Authorization':'Bearer '+at,'apikey':ANON,'Content-Type':'application/json'},
         body: JSON.stringify({password: pw})});
-      if (r.ok){ show('<div class="tick">&check;</div><h1>Password updated</h1><p>You can now open the app and log in with your new password.</p><button class="btn amber" onclick="openApp()">Open the app</button>'); }
+      if (r.ok){ show('<div class="tick">&check;</div><h1>Password updated</h1><p>You can now open '+APP_NAME+' and log in with your new password.</p><button class="btn amber" onclick="openApp()">Open '+APP_NAME+'</button>'); }
       else {
         const e = await r.json().catch(()=>({}));
         msg.className='err'; msg.textContent = e.msg || e.error_description || 'Could not update password.';
       }
     };
   } else {
-    show('<div class="tick">&check;</div><h1>Email confirmed</h1><p>Your account is verified. Open the app and log in to get started.</p><button class="btn amber" onclick="openApp()">Open the app</button>');
+    show('<div class="tick">&check;</div><h1>Email confirmed</h1><p>Your account is verified. Open '+APP_NAME+' and log in to get started.</p><button class="btn amber" onclick="openApp()">Open '+APP_NAME+'</button>');
   }
 </script>
 </body></html>
