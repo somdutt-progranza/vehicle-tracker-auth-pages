@@ -1,0 +1,81 @@
+<!doctype html><html lang="en"><head>
+<meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>KarvIQ — Vehicle invite</title>
+<style>
+  :root{--ink:#0F0F0E;--amber:#D97B12;--muted:#6C6C64;--border:#E7E4DB;--bg:#EDEBE3;}
+  *{box-sizing:border-box;margin:0;font-family:"Space Grotesk",-apple-system,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;}
+  body{min-height:100vh;display:flex;align-items:center;justify-content:center;
+    background:var(--bg);padding:24px;}
+  .card{background:#fff;border-radius:20px;max-width:420px;width:100%;padding:36px 30px;
+    box-shadow:0 24px 60px rgba(15,15,14,.14);text-align:center;}
+  .logo{width:64px;height:64px;border-radius:18px;background:var(--ink);color:#fff;
+    display:flex;align-items:center;justify-content:center;font-size:22px;font-weight:700;
+    letter-spacing:-.5px;margin:0 auto 18px;}
+  h1{font-size:22px;color:var(--ink);letter-spacing:-.3px;font-weight:600;}
+  p{color:var(--muted);font-size:15px;line-height:1.5;margin-top:10px;}
+  .btn{display:block;width:100%;height:52px;line-height:52px;border-radius:14px;background:var(--ink);
+    color:#fff;font-weight:700;font-size:16px;text-decoration:none;margin-top:22px;border:none;cursor:pointer;}
+  .btn.amber{background:var(--amber);color:#fff;}
+  .car{width:72px;height:72px;border-radius:50%;background:#FBF0DC;color:var(--amber);font-size:32px;
+    line-height:72px;margin:0 auto 16px;}
+  .err{color:#C0392B;}
+  .foot{font-size:12px;color:#A5A59D;margin-top:18px;}
+</style></head><body><div class="card">
+<div class="logo" id="logo">K</div>
+<div id="slot"><h1>Loading&hellip;</h1></div>
+<div class="foot" id="foot">KarvIQ</div>
+</div>
+<script>
+  // karviq-customer and karviq-business are separate apps sharing infrastructure,
+  // each with its own scheme/package id — vehicle sharing is a customer-app-only
+  // feature today, so this page only ever hands off to the customer app, but the
+  // ?app= param is accepted for forward-compatibility with the same pattern used
+  // on success.html/failure.html.
+  const qs = new URLSearchParams(location.search);
+  const appKind = qs.get('app') === 'business' ? 'business' : 'customer';
+  const token = qs.get('token') || '';
+  const APP = appKind === 'business' ? "karviqbusiness://" : "karviq://";
+  const PLAY_STORE = appKind === 'business'
+    ? "https://play.google.com/store/apps/details?id=com.progranza.karviqbusiness"
+    : "https://play.google.com/store/apps/details?id=com.progranza.karviq";
+  const APP_STORE = appKind === 'business'
+    ? "https://apps.apple.com/app/idAPPLE_APP_ID_BUSINESS"
+    : "https://apps.apple.com/app/idAPPLE_APP_ID_CUSTOMER";
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const STORE_URL = isIOS ? APP_STORE : PLAY_STORE;
+  const APP_NAME = appKind === 'business' ? 'KarvIQ Business' : 'KarvIQ';
+  const DEEP_LINK = APP + "join-vehicle/" + encodeURIComponent(token);
+
+  document.getElementById('foot').textContent = APP_NAME;
+  document.getElementById('logo').textContent = appKind === 'business' ? 'KB' : 'K';
+  document.title = APP_NAME + ' — Vehicle invite';
+
+  function show(html){ document.getElementById('slot').innerHTML = html; }
+
+  // Same technique as success.html: attempt the deep link, and only fall back
+  // to the store if this tab is still visible after a short delay (meaning
+  // there was no app installed to hand off to).
+  function openApp(){
+    const timer = setTimeout(function(){
+      if (document.visibilityState === 'visible') {
+        location.href = STORE_URL;
+      }
+    }, 1600);
+    document.addEventListener('visibilitychange', function onVis(){
+      if (document.visibilityState === 'hidden') {
+        clearTimeout(timer);
+        document.removeEventListener('visibilitychange', onVis);
+      }
+    });
+    location.href = DEEP_LINK;
+  }
+
+  if (!token) {
+    show('<h1>Invite link incomplete</h1><p class="err">This invite link is missing its code — ask for a fresh QR code or link from the vehicle owner.</p>');
+  } else {
+    show('<div class="car">&#128663;</div><h1>You\'ve been invited</h1>' +
+      '<p>Someone shared a vehicle with you on ' + APP_NAME + '. Open the app to accept — if you don\'t have it yet, this will take you to install it first.</p>' +
+      '<button class="btn amber" onclick="openApp()">Open ' + APP_NAME + '</button>');
+  }
+</script>
+</body></html>
