@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Delete Your KarvIQ Business Account</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FAFAF8;
+    --surface: #F1EEE7;
+    --ink: #0F0F0E;
+    --ink-soft: #3A372F;
+    --muted: #8A8577;
+    --rule: #E1DCD0;
+    --accent: #B4713B;
+    --accent-soft: #F3E4D5;
+    --accent-ink: #7A4A22;
+    --keep: #4B6350;
+    --keep-soft: #E6ECE3;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #17150F;
+      --surface: #1F1C15;
+      --ink: #F3F1EA;
+      --ink-soft: #D3CFC2;
+      --muted: #948E7C;
+      --rule: #322D22;
+      --accent: #E0995F;
+      --accent-soft: #33261A;
+      --accent-ink: #F0B685;
+      --keep: #93B79A;
+      --keep-soft: #212A22;
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #17150F;
+    --surface: #1F1C15;
+    --ink: #F3F1EA;
+    --ink-soft: #D3CFC2;
+    --muted: #948E7C;
+    --rule: #322D22;
+    --accent: #E0995F;
+    --accent-soft: #33261A;
+    --accent-ink: #F0B685;
+    --keep: #93B79A;
+    --keep-soft: #212A22;
+  }
+
+  * { box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    line-height: 1.6;
+    padding: 4rem 1.5rem 6rem;
+  }
+
+  .page {
+    max-width: 640px;
+    margin: 0 auto;
+  }
+
+  .eyebrow {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 1.4rem;
+  }
+
+  .eyebrow .mark {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+    flex-shrink: 0;
+  }
+
+  h1 {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-weight: 700;
+    font-size: clamp(2rem, 5vw, 2.6rem);
+    line-height: 1.15;
+    letter-spacing: -0.01em;
+    text-wrap: balance;
+    margin: 0 0 0.6rem;
+    color: var(--ink);
+  }
+
+  .dek {
+    font-size: 1.05rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+    margin: 0 0 3rem;
+  }
+
+  h2 {
+    font-family: "Source Serif 4", Georgia, serif;
+    font-weight: 600;
+    font-size: 1.35rem;
+    letter-spacing: -0.005em;
+    margin: 0 0 1.1rem;
+    color: var(--ink);
+  }
+
+  section {
+    margin-bottom: 3rem;
+  }
+
+  section + section {
+    border-top: 1px solid var(--rule);
+    padding-top: 3rem;
+  }
+
+  .steps {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    counter-reset: step;
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    overflow: hidden;
+    background: var(--surface);
+  }
+
+  .steps li {
+    counter-increment: step;
+    display: grid;
+    grid-template-columns: 2.75rem 1fr;
+    gap: 0.9rem;
+    padding: 1rem 1.2rem;
+    align-items: baseline;
+  }
+
+  .steps li + li {
+    border-top: 1px solid var(--rule);
+  }
+
+  .steps li::before {
+    content: counter(step);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--accent-ink);
+    background: var(--accent-soft);
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    align-self: center;
+  }
+
+  .steps strong {
+    color: var(--ink);
+    font-weight: 600;
+  }
+
+  .fine {
+    font-size: 0.9rem;
+    color: var(--muted);
+    margin-top: 1rem;
+  }
+
+  .compare {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  @media (max-width: 520px) {
+    .compare { grid-template-columns: 1fr; }
+  }
+
+  .compare-card {
+    border-radius: 10px;
+    padding: 1.2rem 1.3rem;
+    border: 1px solid var(--rule);
+  }
+
+  .compare-card.removed { background: var(--surface); }
+  .compare-card.kept { background: var(--keep-soft); border-color: color-mix(in srgb, var(--keep) 35%, var(--rule)); }
+
+  .compare-card h3 {
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.72rem;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin: 0 0 0.85rem;
+    display: flex;
+    align-items: center;
+    gap: 0.45rem;
+  }
+
+  .compare-card.removed h3 { color: var(--accent-ink); }
+  .compare-card.kept h3 { color: var(--keep); }
+
+  .compare-card ul {
+    margin: 0;
+    padding: 0 0 0 1.05rem;
+    font-size: 0.92rem;
+    color: var(--ink-soft);
+  }
+
+  .compare-card li + li { margin-top: 0.4rem; }
+
+  .note {
+    background: var(--accent-soft);
+    border: 1px solid color-mix(in srgb, var(--accent) 35%, var(--rule));
+    border-radius: 10px;
+    padding: 1.1rem 1.3rem;
+    font-size: 0.9rem;
+    color: var(--accent-ink);
+  }
+
+  .contact {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 10px;
+    padding: 1.3rem 1.4rem;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+  }
+
+  .contact a {
+    color: var(--accent-ink);
+    font-weight: 500;
+    text-decoration-color: color-mix(in srgb, var(--accent-ink) 40%, transparent);
+  }
+
+  .contact a:focus-visible,
+  .steps a:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+    border-radius: 3px;
+  }
+
+  footer {
+    margin-top: 3.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: "JetBrains Mono", monospace;
+    font-size: 0.75rem;
+    color: var(--muted);
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+</style>
+</head>
+<body>
+  <div class="page">
+    <div class="eyebrow"><span class="mark"></span>KarvIQ Business &middot; Account &amp; Data</div>
+
+    <h1>Delete your KarvIQ Business account</h1>
+    <p class="dek">You can permanently delete your account and its associated data directly from the app. Here's exactly what that does.</p>
+
+    <section>
+      <h2>How to delete your account</h2>
+      <ol class="steps">
+        <li><span><strong>Open the KarvIQ Business app</strong> and sign in.</span></li>
+        <li><span>Go to <strong>Settings</strong>.</span></li>
+        <li><span>Scroll to the bottom and tap <strong>Delete Account</strong>.</span></li>
+        <li><span>Confirm when prompted. Deletion happens immediately and can't be undone.</span></li>
+      </ol>
+      <p class="fine">No waiting period, no support ticket &mdash; the request is processed the moment you confirm.</p>
+    </section>
+
+    <section>
+      <h2>What happens to your data</h2>
+      <div class="compare">
+        <div class="compare-card removed">
+          <h3>Deleted permanently</h3>
+          <ul>
+            <li>Your profile &mdash; name, email, phone</li>
+            <li>Your staff membership and role at any shop</li>
+            <li>Uploaded bills and documents you added</li>
+            <li>Notification history and device push token</li>
+          </ul>
+        </div>
+        <div class="compare-card kept">
+          <h3>Retained separately</h3>
+          <ul>
+            <li>Shop subscription billing records, held by Stripe for tax and fraud-prevention compliance</li>
+            <li>Job, customer, and accounting records that belong to the shop itself, not to your individual account</li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">
+        KarvIQ Business is shop-owned software: jobs, customer records, and accounting entries belong to the organization, not to any one staff account. Deleting your personal account removes your login and profile, but shop-level records created while you worked there stay with the shop, the same way an employee leaving doesn't erase the company's books.
+      </p>
+    </section>
+
+    <section>
+      <h2>Deleting your shop, not just your account</h2>
+      <p style="color: var(--ink-soft); font-size: 0.95rem;">
+        If you're the shop owner and want the entire organization &mdash; including all customer, job, and accounting data &mdash; permanently removed, contact us directly rather than using in-app account deletion, since that only removes your personal login.
+      </p>
+    </section>
+
+    <section>
+      <h2>Can't sign in?</h2>
+      <p class="contact">
+        If you no longer have access to the app, email
+        <a href="mailto:support@progranza.com">support@progranza.com</a>
+        from the address on your account and we'll delete it on your behalf.
+      </p>
+    </section>
+
+    <footer>
+      <span>KarvIQ Business &middot; Progranza</span>
+      <span>com.progranza.karviqbusiness</span>
+    </footer>
+  </div>
+</body>
+</html>
