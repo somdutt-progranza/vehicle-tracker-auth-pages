@@ -92,10 +92,20 @@
     location.href = APP;
   }
 
-  if (type === 'recovery' && at) {
-    show('<h1>Set a new password</h1><p>Choose a new password for your account.</p>'+
+  // 'invite' (admin-invited user, e.g. from KarvIQ_Business_web's Users page)
+  // and 'signup' (email confirmation) links carry an access_token in the hash
+  // just like 'recovery' does, and just as much need a set-password step —
+  // an invited user has NO password yet at all, so leaving them at a bare
+  // "email confirmed" screen with nothing to log in with was a dead end.
+  const needsPassword = (type === 'recovery' || type === 'invite' || type === 'signup') && at;
+  if (needsPassword) {
+    const heading = type === 'recovery' ? 'Set a new password' : 'Set your password';
+    const intro = type === 'recovery'
+      ? 'Choose a new password for your account.'
+      : 'Choose a password to finish setting up your account.';
+    show('<h1>'+heading+'</h1><p>'+intro+'</p>'+
       '<label>New password</label><input id="pw" type="password" placeholder="At least 6 characters"/>'+
-      '<button class="btn" id="save">Update password</button><p id="msg"></p>');
+      '<button class="btn" id="save">Save password</button><p id="msg"></p>');
     document.getElementById('save').onclick = async () => {
       const pw = document.getElementById('pw').value;
       const msg = document.getElementById('msg');
@@ -106,11 +116,11 @@
         body: JSON.stringify({password: pw})});
       if (r.ok){
         const cta = appKind === 'web' ? 'Open KarvIQ website' : 'Open '+APP_NAME;
-        show('<div class="tick">&check;</div><h1>Password updated</h1><p>You can now open '+APP_NAME+' and log in with your new password.</p><button class="btn amber" onclick="openApp()">'+cta+'</button>');
+        show('<div class="tick">&check;</div><h1>Password saved</h1><p>You can now open '+APP_NAME+' and log in with your new password.</p><button class="btn amber" onclick="openApp()">'+cta+'</button>');
       }
       else {
         const e = await r.json().catch(()=>({}));
-        msg.className='err'; msg.textContent = e.msg || e.error_description || 'Could not update password.';
+        msg.className='err'; msg.textContent = e.msg || e.error_description || 'Could not save password.';
       }
     };
   } else {
