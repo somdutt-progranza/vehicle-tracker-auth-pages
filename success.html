@@ -32,14 +32,18 @@
   const SUPABASE_URL = "https://nyklbvlregofpplcojbf.supabase.co";
   const ANON = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im55a2xidmxyZWdvZnBwbGNvamJmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3ODU4Mjk2MjMsImV4cCI6MjEwMTQwNTYyM30.eeSPv6Wph-FEg8v0zPnuV40vXjYMfT5QwciaBOcQYR8";
 
-  // karviq-customer and karviq-business are separate apps sharing this one
-  // Supabase project, each with its own scheme/package id. Each app passes
-  // ?app=customer or ?app=business in its emailRedirectTo/resetTo URL so this
-  // page knows which one to hand off to; default to customer if missing
-  // (e.g. an old email sent before this param existed).
+  // karviq-customer and karviq-business are separate mobile apps sharing this
+  // one Supabase project, each with its own scheme/package id; KarvIQ_Business_web
+  // is the web dashboard (platform-admin invites, business web login) with no
+  // deep link or app store at all. Each caller passes ?app=customer, ?app=business,
+  // or ?app=web in its emailRedirectTo/resetTo URL so this page knows which one
+  // to hand off to; default to customer if missing (e.g. an old email sent
+  // before this param existed).
   const earlyQs = new URLSearchParams(location.search);
-  const appKind = earlyQs.get('app') === 'business' ? 'business' : 'customer';
+  const appParam = earlyQs.get('app');
+  const appKind = appParam === 'business' ? 'business' : appParam === 'web' ? 'web' : 'customer';
   const APP = appKind === 'business' ? "karviqbusiness://" : "karviq://";
+  const WEB_URL = "https://karviq.app/login";
   // Bundle/package id matches app.config.js exactly on both platforms. Both
   // URLs 404 until each app is actually published on its store — the Apple
   // ones use placeholder numeric ids since there's no App Store listing yet;
@@ -54,7 +58,7 @@
   const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
   const STORE_URL = isIOS ? APP_STORE : PLAY_STORE;
 
-  const APP_NAME = appKind === 'business' ? 'KarvIQ Business' : 'KarvIQ';
+  const APP_NAME = appKind === 'business' ? 'KarvIQ Business' : appKind === 'web' ? 'KarvIQ' : 'KarvIQ';
   document.getElementById('foot').textContent = APP_NAME;
   document.getElementById('logo').textContent = appKind === 'business' ? 'KB' : 'K';
   document.title = APP_NAME;
@@ -71,7 +75,9 @@
   // off to, the tab backgrounds/closes before the timer fires; if we're
   // still here, there was nothing to open it with, so send the user to the
   // Play Store instead of leaving the button looking dead.
+  // Web has no app/deep-link at all — just go straight to the dashboard.
   function openApp(){
+    if (appKind === 'web') { location.href = WEB_URL; return; }
     const timer = setTimeout(function(){
       if (document.visibilityState === 'visible') {
         location.href = STORE_URL;
@@ -98,14 +104,18 @@
       const r = await fetch(SUPABASE_URL+'/auth/v1/user', {method:'PUT',
         headers:{'Authorization':'Bearer '+at,'apikey':ANON,'Content-Type':'application/json'},
         body: JSON.stringify({password: pw})});
-      if (r.ok){ show('<div class="tick">&check;</div><h1>Password updated</h1><p>You can now open '+APP_NAME+' and log in with your new password.</p><button class="btn amber" onclick="openApp()">Open '+APP_NAME+'</button>'); }
+      if (r.ok){
+        const cta = appKind === 'web' ? 'Open KarvIQ website' : 'Open '+APP_NAME;
+        show('<div class="tick">&check;</div><h1>Password updated</h1><p>You can now open '+APP_NAME+' and log in with your new password.</p><button class="btn amber" onclick="openApp()">'+cta+'</button>');
+      }
       else {
         const e = await r.json().catch(()=>({}));
         msg.className='err'; msg.textContent = e.msg || e.error_description || 'Could not update password.';
       }
     };
   } else {
-    show('<div class="tick">&check;</div><h1>Email confirmed</h1><p>Your account is verified. Open '+APP_NAME+' and log in to get started.</p><button class="btn amber" onclick="openApp()">Open '+APP_NAME+'</button>');
+    const cta = appKind === 'web' ? 'Open KarvIQ website' : 'Open '+APP_NAME;
+    show('<div class="tick">&check;</div><h1>Email confirmed</h1><p>Your account is verified. Open '+APP_NAME+' and log in to get started.</p><button class="btn amber" onclick="openApp()">'+cta+'</button>');
   }
 </script>
 </body></html>
